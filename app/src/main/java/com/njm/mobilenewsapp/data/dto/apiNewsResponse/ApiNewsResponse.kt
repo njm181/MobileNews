@@ -6,7 +6,5 @@ data class ApiNewsResponse(
     @SerializedName("articles")
     val articles: List<Article>,
     @SerializedName("status")
-    val status: String,
-    @SerializedName("totalResults")
-    val totalResults: Int
+    val status: String
 )

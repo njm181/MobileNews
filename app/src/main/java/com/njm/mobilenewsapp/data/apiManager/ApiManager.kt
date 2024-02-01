@@ -55,7 +55,7 @@ object ApiManager {
     fun createApiTheGuardianService(): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_API_THE_GUARDIAN)
-            .client(provideHttpClient(provideLogginInterceptor(), value = "9b7bec85-cd8c-4543-a31d-6aa226d1eda7"))
+            .client(provideHttpClient(provideLogginInterceptor()))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)

@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.njm.mobilenewsapp.data.apiManager.ApiManager
 import com.njm.mobilenewsapp.data.repositoryImpl.ApiNewYorkTimesRepositoryImpl
 import com.njm.mobilenewsapp.data.repositoryImpl.ApiNewsRepositoryImpl
+import com.njm.mobilenewsapp.data.repositoryImpl.ApiTheGuardianRespositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.ui.theme.MobileNewsAppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +32,10 @@ class MainActivity : ComponentActivity() {
         apiService = ApiManager.createApiNewYorkTimesService()
     )
 
+    private val apiTheGuardianRepositoryImpl = ApiTheGuardianRespositoryImpl(
+        apiService = ApiManager.createApiTheGuardianService()
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,7 +43,8 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit){
                 println("================================================================================")
                 //apiNewsRepositoryImpl.getNews()
-                apiNewYorkTimesRepositoryImpl.getNews()
+                //apiNewYorkTimesRepositoryImpl.getNews()
+                apiTheGuardianRepositoryImpl.getNews()
             }
 
             MobileNewsAppTheme {

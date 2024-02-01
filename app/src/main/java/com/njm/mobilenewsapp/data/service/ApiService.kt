@@ -18,9 +18,9 @@ interface ApiService {
     @GET("sports.json")
     suspend fun getNewsFromApiNewYorkTimes(@Query("api-key") apiKey: String): Response<ApiNewYorkTimesResponse>
 
-    @GET()
+    @GET("search")
     suspend fun getNewsFromApiTheGuardian(
-        //@Header("api-key") apiKey: String,
+        @Header("api-key") apiKey: String,
         @Query("q") topic: String
     ): Response<ApiTheGuardianResponse>
 
