@@ -1,4 +1,4 @@
-package com.njm.mobilenewsapp.ui.theme
+package com.njm.mobilenewsapp.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

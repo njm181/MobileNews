@@ -1,5 +1,7 @@
 package com.njm.mobilenewsapp.domain.repository
 
-interface ApiRepository {
-    suspend fun getNews()
+import com.njm.mobilenewsapp.domain.utils.NetworkResult
+
+interface ApiRepository<T> {
+    suspend fun getNews(): NetworkResult<T>
 }
