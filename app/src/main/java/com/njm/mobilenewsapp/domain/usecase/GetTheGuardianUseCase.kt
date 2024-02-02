@@ -1,10 +1,11 @@
 package com.njm.mobilenewsapp.domain.usecase
 
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
+import com.njm.mobilenewsapp.domain.repository.TheGuardianRepository
 import com.njm.mobilenewsapp.domain.utils.NetworkResult
 import javax.inject.Inject
 
-class GetTheGuardianUseCase @Inject constructor(private val repository: ApiRepository<Any>) {
+class GetTheGuardianUseCase @Inject constructor(private val repository: TheGuardianRepository) {
     suspend operator fun invoke(): NetworkResult<Any> {
         return repository.getNews()
     }

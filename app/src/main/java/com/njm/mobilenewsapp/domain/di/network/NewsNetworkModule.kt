@@ -4,6 +4,7 @@ import com.njm.mobilenewsapp.data.apiManager.AuthInterceptor
 import com.njm.mobilenewsapp.data.repositoryImpl.NewsRepositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
+import com.njm.mobilenewsapp.domain.repository.NewsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -23,26 +25,29 @@ import javax.inject.Singleton
 object NewsNetworkModule {
 
 
-    @Singleton
     @Provides
+    @Singleton
+    @Named("news-interceptor")
     fun provideLogginInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return interceptor
     }
 
-    @Singleton
     @Provides
-    fun provideNewsHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+    @Singleton
+    @Named("news-client")
+    fun provideNewsHttpClient(@Named("news-interceptor") interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor("08cda04fa4f34524bace7a7d9db31851"))
             .addInterceptor(interceptor)
             .build()
     }
 
-    @Singleton
     @Provides
-    fun provideApiNewsService(okHttpClient: OkHttpClient): ApiService {
+    @Singleton
+    @Named("news-service")
+    fun provideApiNewsService(@Named("news-client") okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
             .baseUrl("https://newsapi.org/v2/everything/")
             .client(okHttpClient)
@@ -50,19 +55,14 @@ object NewsNetworkModule {
             .build()
             .create(ApiService::class.java)
     }
-
-//    @Singleton
-//    @Provides
-//    fun providesNewsRepository(apiService: ApiService): NewsRepositoryImpl {
-//        return NewsRepositoryImpl(apiService)
-//    }
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
+@Named("news-repository")
 abstract class NewsApiRepositoryModule {
 
     @Binds
-    internal abstract fun provideApiRepository(newsRepositoryImpl: NewsRepositoryImpl): ApiRepository<Any>
+    abstract fun provideNewsApiRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository
 }
 
