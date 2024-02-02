@@ -20,7 +20,9 @@ class MainViewModel @Inject constructor(
 
     fun getNews(){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = getNewsUseCase.invoke()
+            //val result = getNewsUseCase.invoke()
+            //val result = getNewYorkTimesUseCase.invoke()
+            //val result = getTheGuardianUseCase.invoke()
             println("============== $result ================")
         }
     }

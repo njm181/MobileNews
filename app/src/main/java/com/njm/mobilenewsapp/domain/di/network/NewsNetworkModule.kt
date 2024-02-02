@@ -4,13 +4,10 @@ import com.njm.mobilenewsapp.data.apiManager.AuthInterceptor
 import com.njm.mobilenewsapp.data.repositoryImpl.NewsRepositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
-import com.njm.mobilenewsapp.domain.repository.NewsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,10 +56,10 @@ object NewsNetworkModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-@Named("news-repository")
 abstract class NewsApiRepositoryModule {
 
     @Binds
-    abstract fun provideNewsApiRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository
+    @Named("news-repository")
+    abstract fun provideNewsApiRepository(newsRepositoryImpl: NewsRepositoryImpl): ApiRepository
 }
 

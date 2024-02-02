@@ -1,15 +1,12 @@
 package com.njm.mobilenewsapp.domain.di.network
 
 import com.njm.mobilenewsapp.data.repositoryImpl.NewYorkTimesRepositoryImpl
-import com.njm.mobilenewsapp.data.repositoryImpl.NewsRepositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
-import com.njm.mobilenewsapp.domain.repository.NewYorkTimesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -58,9 +55,9 @@ object NewYorkTimesNetworkModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-@Named("newyorktimes-repository")
 abstract class NewYorkTimesApiRepositoryModule {
 
     @Binds
-    abstract fun provideNewYorkTimesApiRepository(newYorkTimesRepositoryImpl: NewYorkTimesRepositoryImpl): NewYorkTimesRepository
+    @Named("newyorktimes-repository")
+    abstract fun provideNewYorkTimesApiRepository(newYorkTimesRepositoryImpl: NewYorkTimesRepositoryImpl): ApiRepository
 }

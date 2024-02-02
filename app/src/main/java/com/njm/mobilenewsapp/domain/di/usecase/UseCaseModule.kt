@@ -1,10 +1,6 @@
 package com.njm.mobilenewsapp.domain.di.usecase
 
-import com.njm.mobilenewsapp.data.repositoryImpl.NewsRepositoryImpl
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
-import com.njm.mobilenewsapp.domain.repository.NewYorkTimesRepository
-import com.njm.mobilenewsapp.domain.repository.NewsRepository
-import com.njm.mobilenewsapp.domain.repository.TheGuardianRepository
 import com.njm.mobilenewsapp.domain.usecase.GetNewYorkTimesUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetNewsUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetTheGuardianUseCase
@@ -20,19 +16,19 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetNewsUseCase(repository: NewsRepository): GetNewsUseCase {
+    fun provideGetNewsUseCase(repository: ApiRepository): GetNewsUseCase {
         return GetNewsUseCase(repository = repository)
     }
 
     @Singleton
     @Provides
-    fun provideGetNewYorkTimesUseCase(repository: NewYorkTimesRepository): GetNewYorkTimesUseCase {
+    fun provideGetNewYorkTimesUseCase(repository: ApiRepository): GetNewYorkTimesUseCase {
         return GetNewYorkTimesUseCase(repository = repository)
     }
 
     @Singleton
     @Provides
-    fun provideGetTheGuardianUseCase(repository: TheGuardianRepository): GetTheGuardianUseCase {
+    fun provideGetTheGuardianUseCase(repository: ApiRepository): GetTheGuardianUseCase {
         return GetTheGuardianUseCase(repository = repository)
     }
 }

@@ -1,16 +1,13 @@
 package com.njm.mobilenewsapp.domain.di.network
 
 import com.njm.mobilenewsapp.data.apiManager.AuthInterceptor
-import com.njm.mobilenewsapp.data.repositoryImpl.NewYorkTimesRepositoryImpl
 import com.njm.mobilenewsapp.data.repositoryImpl.TheGuardianRespositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
-import com.njm.mobilenewsapp.domain.repository.TheGuardianRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -66,9 +63,9 @@ object TheGuardianNetworkModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-@Named("theguardian-repository")
 abstract class TheGuardianApiRepositoryModule {
 
     @Binds
-    abstract fun provideTheGuardianApiRepository(theGuardianRespositoryImpl: TheGuardianRespositoryImpl): TheGuardianRepository
+    @Named("theguardian-repository")
+    abstract fun provideTheGuardianApiRepository(theGuardianRespositoryImpl: TheGuardianRespositoryImpl): ApiRepository
 }
