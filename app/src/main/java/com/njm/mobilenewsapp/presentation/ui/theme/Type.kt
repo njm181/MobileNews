@@ -1,4 +1,4 @@
-package com.njm.mobilenewsapp.ui.theme
+package com.njm.mobilenewsapp.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
