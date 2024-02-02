@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             //val result = getNewsUseCase.invoke()
             //val result = getNewYorkTimesUseCase.invoke()
-            //val result = getTheGuardianUseCase.invoke()
+            val result = getTheGuardianUseCase.invoke()
             println("============== $result ================")
         }
     }
