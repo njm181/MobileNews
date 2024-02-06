@@ -10,11 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +35,30 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.njm.mobilenewsapp.presentation.components.card.LargeCard
 import com.njm.mobilenewsapp.presentation.components.card.SmallCard
 import com.njm.mobilenewsapp.presentation.viewModel.MainViewModel
+import com.njm.mobilenewsapp.presentation.viewModel.SharedViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+
 
 @Composable
-fun MainScreen(mainViewModel: MainViewModel?) {
-    val loadingState = mainViewModel?.loadingState?.observeAsState()?.value
-    MainScreenContent(loadingState)
+fun MainScreen(mainViewModel: MainViewModel?, sharedViewModel: SharedViewModel?) {
+
+    val newState = sharedViewModel?.newsState?.collectAsState()
+    LaunchedEffect(newState){
+        println(newState)
+    }
+
+    Button(onClick = {
+        sharedViewModel?.startMyWorker()
+    }) {
+        Text(text = "data ====> ${newState?.value}")
+    }
+    //MainScreenContent(loadingState, dataModelState.toString())
 }
 
 @Composable
-fun MainScreenContent(loadingState: Boolean?) {
+fun MainScreenContent(loadingState: Boolean?, dataModelState: String?) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +78,7 @@ fun MainScreenContent(loadingState: Boolean?) {
                     .fillMaxWidth()
                     .padding(start = 8.dp),
                 textAlign = TextAlign.Start,
-                text = "Mobile News",
+                text = "dataModelState".toString(),//"Mobile News",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -86,6 +109,6 @@ fun MainScreenContent(loadingState: Boolean?) {
 @Preview
 fun MainScreenPreview(){
     MaterialTheme {
-        MainScreen(null)
+        MainScreen(null, null)
     }
 }

@@ -76,9 +76,18 @@ dependencies {
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.6.0")
 
+    implementation ("androidx.compose.runtime:runtime:1.6.0")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+
+
+
 
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation ("androidx.hilt:hilt-work:1.1.0-alpha01")
+    kapt ("androidx.hilt:hilt-compiler:1.1.0-alpha01")
+
 
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")

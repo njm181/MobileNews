@@ -18,13 +18,29 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getTheGuardianUseCase: GetTheGuardianUseCase,
     private val getNewsUseCase: GetNewsUseCase,
-    private val getNewYorkTimesUseCase: GetNewYorkTimesUseCase
+    private val getNewYorkTimesUseCase: GetNewYorkTimesUseCase,
+   //private val workManager: WorkManager
 ): ViewModel() {
+//    private val context = getApplication<Application>().applicationContext
+//    private val workManager = WorkManager.getInstance(context)
 
     private val _loadingState = MutableLiveData<Boolean>()
     val loadingState: LiveData<Boolean>
         get() = _loadingState
 
+
+//    fun activatePeriodicWorker() {
+//        val workRequest = PeriodicWorkRequestBuilder<NewsUpdateWorker>(
+//            repeatInterval = 1, // Intervalo de repetición en minutos
+//            repeatIntervalTimeUnit = TimeUnit.MINUTES
+//        ).build()
+//
+//        workManager.enqueue(workRequest)
+//    }
+
+    fun updateLoadingState(isLoading: Boolean) {
+        _loadingState.postValue(isLoading)
+    }
 
     fun getNews(){
         _loadingState.postValue(true)
@@ -36,10 +52,11 @@ class MainViewModel @Inject constructor(
             )
 
             val results = awaitAll(*deferredResults.toTypedArray())
-            _loadingState.postValue(false)
             results.forEachIndexed { index, result ->
                 println("${index}. Received data from ${result.data}")
             }
+            _loadingState.postValue(false)
         }
     }
+
 }

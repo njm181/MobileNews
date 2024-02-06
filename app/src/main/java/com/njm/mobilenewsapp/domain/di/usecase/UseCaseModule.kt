@@ -1,9 +1,12 @@
 package com.njm.mobilenewsapp.domain.di.usecase
 
+import com.njm.mobilenewsapp.data.repositoryImpl.WorkerRepositoryImpl
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
+import com.njm.mobilenewsapp.domain.repository.WorkerRepository
 import com.njm.mobilenewsapp.domain.usecase.GetNewYorkTimesUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetNewsUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetTheGuardianUseCase
+import com.njm.mobilenewsapp.domain.usecase.UpdateNewsByWorkerUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +33,11 @@ object UseCaseModule {
     @Provides
     fun provideGetTheGuardianUseCase(repository: ApiRepository): GetTheGuardianUseCase {
         return GetTheGuardianUseCase(repository = repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateNewsByWorkerUseCase(repository: WorkerRepository): UpdateNewsByWorkerUseCase{
+        return UpdateNewsByWorkerUseCase(repository = repository)
     }
 }
