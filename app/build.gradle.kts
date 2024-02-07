@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -8,6 +9,8 @@ plugins {
 }
 
 android {
+    android.buildFeatures.buildConfig = true
+
     namespace = "com.njm.mobilenewsapp"
     compileSdk = 34
 
@@ -22,6 +25,20 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField(type = "String", name = "API_KEY_THE_GUARDIAN", value = "\"${properties.getProperty("API_KEY_THE_GUARDIAN")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_THE_GUARDIAN", value = "\"${properties.getProperty("BASE_URL_THE_GUARDIAN")}\"")
+
+        buildConfigField(type = "String", name = "API_KEY_NEW_YORK_TIMES", value = "\"${properties.getProperty("API_KEY_NEW_YORK_TIMES")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_NEW_YORK_TIMES", value = "\"${properties.getProperty("BASE_URL_NEW_YORK_TIMES")}\"")
+
+        buildConfigField(type = "String", name = "API_KEY_NEWS", value = "\"${properties.getProperty("API_KEY_NEWS")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_NEWS", value = "\"${properties.getProperty("BASE_URL_NEWS")}\"")
+
+
     }
 
     buildTypes {

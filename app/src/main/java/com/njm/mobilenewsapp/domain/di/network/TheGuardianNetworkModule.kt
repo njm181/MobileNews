@@ -1,5 +1,6 @@
 package com.njm.mobilenewsapp.domain.di.network
 
+import com.njm.mobilenewsapp.BuildConfig
 import com.njm.mobilenewsapp.data.apiManager.AuthInterceptor
 import com.njm.mobilenewsapp.data.repositoryImpl.TheGuardianRespositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
@@ -41,7 +42,7 @@ object TheGuardianNetworkModule {
     @Named("theguardian-client")
     fun provideNewsHttpClient(@Named("theguardian-interceptor") interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor("9b7bec85-cd8c-4543-a31d-6aa226d1eda7"))
+            .addInterceptor(AuthInterceptor(BuildConfig.API_KEY_THE_GUARDIAN))
             .addInterceptor(interceptor)
             .build()
     }
@@ -51,7 +52,7 @@ object TheGuardianNetworkModule {
     @Named("theguardian-service")
     fun provideApiTheGuardianService(@Named("theguardian-client") okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://content.guardianapis.com/")
+            .baseUrl(BuildConfig.BASE_URL_THE_GUARDIAN)
             //Build Config
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())

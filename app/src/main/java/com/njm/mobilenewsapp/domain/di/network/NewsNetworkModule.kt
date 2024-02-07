@@ -1,5 +1,6 @@
 package com.njm.mobilenewsapp.domain.di.network
 
+import com.njm.mobilenewsapp.BuildConfig
 import com.njm.mobilenewsapp.data.apiManager.AuthInterceptor
 import com.njm.mobilenewsapp.data.repositoryImpl.NewsRepositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
@@ -36,7 +37,7 @@ object NewsNetworkModule {
     @Named("news-client")
     fun provideNewsHttpClient(@Named("news-interceptor") interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor("08cda04fa4f34524bace7a7d9db31851"))
+            .addInterceptor(AuthInterceptor(BuildConfig.API_KEY_NEWS))
             .addInterceptor(interceptor)
             .build()
     }
@@ -46,7 +47,7 @@ object NewsNetworkModule {
     @Named("news-service")
     fun provideApiNewsService(@Named("news-client") okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://newsapi.org/v2/everything/")
+            .baseUrl(BuildConfig.BASE_URL_NEWS)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
