@@ -26,14 +26,14 @@ class SharedViewModel @Inject constructor(
     private val updatedNewsByWorkerUseCase: UpdateNewsByWorkerUseCase
 ): ViewModel() {
 
-    private val _newsState = MutableStateFlow<String>("")
-    val newsState: StateFlow<String> = _newsState
+    private val _newsUpdateState = MutableStateFlow<String>("")
+    val newsUpdateState: StateFlow<String> = _newsUpdateState
 
     private fun getData(){
         viewModelScope.launch(Dispatchers.IO) {
             val result = updatedNewsByWorkerUseCase.getValue()
             println(result)
-            _newsState.value = result
+            _newsUpdateState.value = result
         }
     }
 

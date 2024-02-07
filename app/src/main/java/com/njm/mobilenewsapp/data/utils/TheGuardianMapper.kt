@@ -10,7 +10,7 @@ fun ApiTheGuardianResponse.toTheGuardianDomain(): TheGuardian {
 }
 
 fun com.njm.mobilenewsapp.data.dto.apiTheGuardianResponse.Response.toGuardianDomain(): Response {
-    return Response(results = results.map { it.toResultDomain() }, status = status)
+    return Response(results = results.map { it.toResultDomain() }.take(5), status = status)
 }
 
 fun Result.toResultDomain(): com.njm.mobilenewsapp.domain.model.theGuardian.Result {

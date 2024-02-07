@@ -15,29 +15,14 @@ class WorkerRepositoryImpl @Inject constructor(): WorkerRepository {
         var myData = ""
     }
 
-    //private var _updatedNewsFlow = MutableStateFlow<String>("")
-    //private var getData = ""
-
     override suspend fun startEmitting(results: String) {
         myData = results
         println(myData)
-//        _updatedNewsFlow.emit(results)
-//        _updatedNewsFlow.value = results
-//        println(_updatedNewsFlow.value)
-        //println(updatedNewsFlow)
     }
 
     override fun returnData(): String {
-        //return getData
         return myData
     }
 
-//    override val latestNews: Flow<String> = flow {
-//        while(true) {
-//            //val latestNews = newsApi.fetchLatestNews()
-//            emit("_updatedNewsFlow.value") // Emits the result of the request to the flow
-//            //delay(refreshIntervalMs) // Suspends the coroutine for some time
-//        }
-//    }
 
 }

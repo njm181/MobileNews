@@ -4,9 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.njm.mobilenewsapp.domain.model.MobileNewsDomain
+import com.njm.mobilenewsapp.domain.model.newYorkTimes.NewYorkTimes
+import com.njm.mobilenewsapp.domain.model.news.News
+import com.njm.mobilenewsapp.domain.model.theGuardian.TheGuardian
 import com.njm.mobilenewsapp.domain.usecase.GetNewYorkTimesUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetNewsUseCase
 import com.njm.mobilenewsapp.domain.usecase.GetTheGuardianUseCase
+import com.njm.mobilenewsapp.domain.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -18,30 +23,25 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getTheGuardianUseCase: GetTheGuardianUseCase,
     private val getNewsUseCase: GetNewsUseCase,
-    private val getNewYorkTimesUseCase: GetNewYorkTimesUseCase,
-   //private val workManager: WorkManager
+    private val getNewYorkTimesUseCase: GetNewYorkTimesUseCase
 ): ViewModel() {
-//    private val context = getApplication<Application>().applicationContext
-//    private val workManager = WorkManager.getInstance(context)
 
     private val _loadingState = MutableLiveData<Boolean>()
     val loadingState: LiveData<Boolean>
         get() = _loadingState
 
+    private val _newState = MutableLiveData<News?>()
+    val newsState: LiveData<News?>
+        get() = _newState
 
-//    fun activatePeriodicWorker() {
-//        val workRequest = PeriodicWorkRequestBuilder<NewsUpdateWorker>(
-//            repeatInterval = 1, // Intervalo de repetición en minutos
-//            repeatIntervalTimeUnit = TimeUnit.MINUTES
-//        ).build()
-//
-//        workManager.enqueue(workRequest)
-//    }
+    private val _newYorkTimesState = MutableLiveData<NewYorkTimes?>()
+    val newYorkTimesState: LiveData<NewYorkTimes?>
+        get() = _newYorkTimesState
 
-    fun updateLoadingState(isLoading: Boolean) {
-        _loadingState.postValue(isLoading)
-    }
-
+    private val _theGuardianState = MutableLiveData<TheGuardian?>()
+    val theGuardianState: LiveData<TheGuardian?>
+        get() = _theGuardianState
+    
     fun getNews(){
         _loadingState.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
@@ -53,9 +53,37 @@ class MainViewModel @Inject constructor(
 
             val results = awaitAll(*deferredResults.toTypedArray())
             results.forEachIndexed { index, result ->
-                println("${index}. Received data from ${result.data}")
+                filterNetworkResults(result)
             }
             _loadingState.postValue(false)
+        }
+    }
+
+    private fun filterNetworkResults(result: NetworkResult<MobileNewsDomain>) {
+        when(result){
+            is NetworkResult.Success -> {
+                filterDataResult(result.data)
+            }
+            is NetworkResult.Error -> {
+
+            }
+        }
+    }
+
+    private fun filterDataResult(data: MobileNewsDomain?) {
+        data?.let {
+            when(data){
+                is News -> {
+                    _newState.postValue(data)
+                }
+                is TheGuardian -> {
+                    _theGuardianState.postValue(data)
+                }
+                is NewYorkTimes -> {
+                    _newYorkTimesState.postValue(data)
+                }
+                else -> {}
+            }
         }
     }
 
