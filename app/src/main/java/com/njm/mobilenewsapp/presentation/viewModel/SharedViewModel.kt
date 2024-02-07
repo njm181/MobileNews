@@ -1,6 +1,8 @@
 package com.njm.mobilenewsapp.presentation.viewModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -9,7 +11,12 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.njm.mobilenewsapp.domain.model.MobileNewsDomain
+import com.njm.mobilenewsapp.domain.model.newYorkTimes.NewYorkTimes
+import com.njm.mobilenewsapp.domain.model.news.News
+import com.njm.mobilenewsapp.domain.model.theGuardian.TheGuardian
 import com.njm.mobilenewsapp.domain.usecase.UpdateNewsByWorkerUseCase
+import com.njm.mobilenewsapp.domain.utils.NetworkResult
 import com.njm.mobilenewsapp.framework.NewsUpdateWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,18 +33,72 @@ class SharedViewModel @Inject constructor(
     private val updatedNewsByWorkerUseCase: UpdateNewsByWorkerUseCase
 ): ViewModel() {
 
-    private val _newsUpdateState = MutableStateFlow<String>("")
-    val newsUpdateState: StateFlow<String> = _newsUpdateState
+    private val _newState = MutableLiveData<News?>()
+    val newsState: LiveData<News?>
+        get() = _newState
+
+    private val _newYorkTimesState = MutableLiveData<NewYorkTimes?>()
+    val newYorkTimesState: LiveData<NewYorkTimes?>
+        get() = _newYorkTimesState
+
+    private val _theGuardianState = MutableLiveData<TheGuardian?>()
+    val theGuardianState: LiveData<TheGuardian?>
+        get() = _theGuardianState
+
+    private val _isRefreshing = MutableLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean>
+        get() = _isRefreshing
+
+    private val _isUpdateDone = MutableLiveData<Boolean>(false)
+    val isUpdateDone: LiveData<Boolean>
+        get() = _isUpdateDone
+
+    fun resetUpdateDone(value: Boolean){
+        _isUpdateDone.value = value
+    }
 
     private fun getData(){
         viewModelScope.launch(Dispatchers.IO) {
             val result = updatedNewsByWorkerUseCase.getValue()
             println(result)
-            _newsUpdateState.value = result
+            result.forEachIndexed { index, result ->
+                filterNetworkResults(result)
+            }
+            _isRefreshing.postValue(false)
+            _isUpdateDone.postValue(true)
+        }
+    }
+
+    private fun filterNetworkResults(result: NetworkResult<MobileNewsDomain>) {
+        when(result){
+            is NetworkResult.Success -> {
+                filterDataResult(result.data)
+            }
+            is NetworkResult.Error -> {
+
+            }
+        }
+    }
+
+    private fun filterDataResult(data: MobileNewsDomain?) {
+        data?.let {
+            when(data){
+                is News -> {
+                    _newState.postValue(data)
+                }
+                is TheGuardian -> {
+                    _theGuardianState.postValue(data)
+                }
+                is NewYorkTimes -> {
+                    _newYorkTimesState.postValue(data)
+                }
+                else -> {}
+            }
         }
     }
 
     fun startMyWorker() {
+        _isRefreshing.value = true
         viewModelScope.launch {
               val workRequest = OneTimeWorkRequestBuilder<NewsUpdateWorker>()
                 .addTag("My-Worker")
@@ -52,7 +113,6 @@ class SharedViewModel @Inject constructor(
                 ExistingWorkPolicy.REPLACE,
                 workRequest
             )
-            //workManager.enqueue(workRequest)
 
             supervisorScope {
                 launch {
@@ -62,7 +122,7 @@ class SharedViewModel @Inject constructor(
                         if (it.state.isFinished) {
                             Log.d("TAG", "WorkRequest - Work finished")
                             getData()
-                            cancel() // cancel the supervisorScope, it is now redundant
+                            cancel()
                         }
                     }
                 }

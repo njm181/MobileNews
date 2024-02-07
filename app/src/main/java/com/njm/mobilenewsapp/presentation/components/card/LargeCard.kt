@@ -2,6 +2,7 @@ package com.njm.mobilenewsapp.presentation.components.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,16 +30,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.njm.mobilenewsapp.R
 
 @Composable
-fun LargeCard(){
+fun LargeCard(
+    sectionName: String,
+    imageUrl: String,
+    description: String,
+    webUrl: String
+){
+    val uriHandler = LocalUriHandler.current
     Card(
         modifier = Modifier
             .width(250.dp)
-            .height(220.dp)
+            .height(260.dp)
             .fillMaxSize()
-            .padding(top = 8.dp),
+            .padding(vertical = 4.dp)
+            .clickable {
+                uriHandler.openUri(webUrl)
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         shape = RoundedCornerShape(10.dp),
     ) {
@@ -50,22 +63,27 @@ fun LargeCard(){
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                text = "Section Name",
+                text = sectionName,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            Image(
-                modifier = Modifier.fillMaxWidth().height(90.dp).background(Color.Gray),
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = ""
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(130.dp)
+                    .background(Color.Gray),
+                model = imageUrl,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
             )
+
 
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 modifier = Modifier.fillMaxWidth().padding(4.dp),
-                text = "Title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title title",
+                text = description,
                 fontSize = 10.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
@@ -79,6 +97,11 @@ fun LargeCard(){
 @Preview
 fun LargeCardPreview(){
     MaterialTheme {
-        LargeCard()
+        LargeCard(
+            sectionName = "Section Name",
+            imageUrl = "",
+            description = "",
+            webUrl = ""
+        )
     }
 }

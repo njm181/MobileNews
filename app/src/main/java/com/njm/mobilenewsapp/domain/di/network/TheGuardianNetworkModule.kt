@@ -41,7 +41,7 @@ object TheGuardianNetworkModule {
     @Named("theguardian-client")
     fun provideNewsHttpClient(@Named("theguardian-interceptor") interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor("08cda04fa4f34524bace7a7d9db31851"))
+            .addInterceptor(AuthInterceptor("9b7bec85-cd8c-4543-a31d-6aa226d1eda7"))
             .addInterceptor(interceptor)
             .build()
     }

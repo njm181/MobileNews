@@ -59,6 +59,10 @@ kapt {
 }
 
 dependencies {
+
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.35.0-alpha")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
     val work_version = "2.8.0"
     // Kotlin + coroutines
     implementation("androidx.work:work-runtime-ktx:$work_version")
@@ -81,7 +85,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
 
 
-
+    implementation("androidx.compose.material:material:1.3.1")
 
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
@@ -102,7 +106,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3-android:1.2.0-alpha10")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

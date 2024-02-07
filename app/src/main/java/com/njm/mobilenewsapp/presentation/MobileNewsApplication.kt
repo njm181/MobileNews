@@ -12,7 +12,6 @@ import javax.inject.Inject
 @HiltAndroidApp
 class MobileNewsApplication: Application(), Configuration.Provider {
 
-    // Allows injecting CoroutineWorkers
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 

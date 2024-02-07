@@ -40,14 +40,13 @@ class NewsUpdateWorker @AssistedInject constructor(
             try {
                 val deferredResults = listOf(
                     async { getNewsUseCase.invoke() },
-                    //async { getNewYorkTimesUseCase.invoke() },
-                    //async { getTheGuardianUseCase.invoke() },
+                    async { getNewYorkTimesUseCase.invoke() },
+                    async { getTheGuardianUseCase.invoke() },
                 )
 
                 val results = awaitAll(*deferredResults.toTypedArray())
                 println(results)
-                //updateNewsByWorkerUseCase.invoke(results = results)
-                updateNewsByWorkerUseCase.invoke(results = "results")
+                updateNewsByWorkerUseCase.invoke(results = results)
                 NotificationHelper.showNotification(
                     applicationContext,
                     "Tarea completada",

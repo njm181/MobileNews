@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
     private val _theGuardianState = MutableLiveData<TheGuardian?>()
     val theGuardianState: LiveData<TheGuardian?>
         get() = _theGuardianState
-    
+
     fun getNews(){
         _loadingState.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
@@ -84,6 +84,20 @@ class MainViewModel @Inject constructor(
                 }
                 else -> {}
             }
+        }
+    }
+
+    fun updateNews(
+        newsUpdatedState: News?,
+        newYorkTimesUpdatedState: NewYorkTimes?,
+        theGuardianUpdatedState: TheGuardian?
+    ) {
+        _loadingState.value = true
+        viewModelScope.launch {
+            _newState.value = newsUpdatedState
+            _newYorkTimesState.value = newYorkTimesUpdatedState
+            _theGuardianState.value = theGuardianUpdatedState
+            _loadingState.value = false
         }
     }
 

@@ -34,9 +34,6 @@ object WorkModule {
         workerFactory: HiltWorkerFactory
     ): Configuration {
         return Configuration.Builder().apply {
-//            if (BuildConfig.DEBUG) {
-//                setMinimumLoggingLevel(android.util.Log.DEBUG)
-//            }
             setWorkerFactory(workerFactory)
         }.build()
     }
@@ -51,12 +48,3 @@ abstract class WorkerApiRepositoryModule {
     @Named("worker-repository")
     abstract fun provideWorkerApiRepository(workerRepositoryImpl: WorkerRepositoryImpl): WorkerRepository
 }
-
-//@Module
-//@InstallIn(ActivityComponent::class)
-//object SharedViewModelModule {
-//    @Provides
-//    fun provideSharedViewModel(workManager: WorkManager): SharedViewModel {
-//        return SharedViewModel(workManager)
-//    }
-//}
