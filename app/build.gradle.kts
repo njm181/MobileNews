@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -8,6 +9,8 @@ plugins {
 }
 
 android {
+    android.buildFeatures.buildConfig = true
+
     namespace = "com.njm.mobilenewsapp"
     compileSdk = 34
 
@@ -22,6 +25,20 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField(type = "String", name = "API_KEY_THE_GUARDIAN", value = "\"${properties.getProperty("API_KEY_THE_GUARDIAN")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_THE_GUARDIAN", value = "\"${properties.getProperty("BASE_URL_THE_GUARDIAN")}\"")
+
+        buildConfigField(type = "String", name = "API_KEY_NEW_YORK_TIMES", value = "\"${properties.getProperty("API_KEY_NEW_YORK_TIMES")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_NEW_YORK_TIMES", value = "\"${properties.getProperty("BASE_URL_NEW_YORK_TIMES")}\"")
+
+        buildConfigField(type = "String", name = "API_KEY_NEWS", value = "\"${properties.getProperty("API_KEY_NEWS")}\"")
+        buildConfigField(type = "String", name = "BASE_URL_NEWS", value = "\"${properties.getProperty("BASE_URL_NEWS")}\"")
+
+
     }
 
     buildTypes {
@@ -60,8 +77,38 @@ kapt {
 
 dependencies {
 
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.35.0-alpha")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    val work_version = "2.8.0"
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+
+    val lifecycle_version = "2.7.0"
+    val arch_version = "2.1.0"
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+
+    implementation ("androidx.compose.runtime:runtime-livedata:1.6.0")
+
+    implementation ("androidx.compose.runtime:runtime:1.6.0")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+
+
+    implementation("androidx.compose.material:material:1.3.1")
+
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation ("androidx.hilt:hilt-work:1.1.0-alpha01")
+    kapt ("androidx.hilt:hilt-compiler:1.1.0-alpha01")
+
 
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -76,7 +123,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3-android:1.2.0-alpha10")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -1,5 +1,6 @@
 package com.njm.mobilenewsapp.domain.di.network
 
+import com.njm.mobilenewsapp.BuildConfig
 import com.njm.mobilenewsapp.data.repositoryImpl.NewYorkTimesRepositoryImpl
 import com.njm.mobilenewsapp.data.service.ApiService
 import com.njm.mobilenewsapp.domain.repository.ApiRepository
@@ -42,7 +43,7 @@ object NewYorkTimesNetworkModule {
     @Named("newyorktimes-service")
     fun provideApiNewYorkTimesService(@Named("newyorktimes-client") okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://api.nytimes.com/svc/topstories/v2/")
+            .baseUrl(BuildConfig.BASE_URL_NEW_YORK_TIMES)
             //Build Config
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())

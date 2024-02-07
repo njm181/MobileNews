@@ -1,6 +1,5 @@
 package com.njm.mobilenewsapp.domain.model.theGuardian
 
-import com.google.gson.annotations.SerializedName
 
 data class Result(
     val id: String,

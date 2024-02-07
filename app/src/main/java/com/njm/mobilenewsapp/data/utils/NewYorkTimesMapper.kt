@@ -6,7 +6,7 @@ import com.njm.mobilenewsapp.data.dto.apiNewYorkTimesResponse.Result
 import com.njm.mobilenewsapp.domain.model.newYorkTimes.NewYorkTimes
 
 fun ApiNewYorkTimesResponse.toNewYorkTimesDomain(): NewYorkTimes {
-    return NewYorkTimes(results = results.map { it.toResultDomain() }, section = section, status = status)
+    return NewYorkTimes(results = results.map { it.toResultDomain() }.take(5), section = section, status = status)
 }
 
 fun Result.toResultDomain(): com.njm.mobilenewsapp.domain.model.newYorkTimes.Result {

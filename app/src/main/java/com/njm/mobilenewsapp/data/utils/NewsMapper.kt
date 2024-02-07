@@ -7,7 +7,7 @@ import com.njm.mobilenewsapp.domain.model.news.News
 
 fun ApiNewsResponse.toNewsDomain(): News {
     return News(
-        articles = articles.map { it.toArticleDomain() },
+        articles = articles.map { it.toArticleDomain() }.take(5),
         status = status
     )
 }
@@ -18,7 +18,7 @@ fun Article.toArticleDomain(): com.njm.mobilenewsapp.domain.model.news.Article {
         content = content,
         description = description,
         publishedAt = publishedAt,
-        source = source.toSourceDomain(),
+        source = source?.toSourceDomain(),
         title = title,
         url = url,
         urlToImage = urlToImage
